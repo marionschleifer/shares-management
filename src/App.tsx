@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import 'react-dropdown/style.css';
+import 'bootstrap/dist/css/bootstrap.css';
 import { AppData } from './types';
 import { EditShareholders } from './edit-shareholders';
 import { EditSharesIssues } from './edit-shares-issues';
 import { CapTable } from './cap-table';
-import 'react-dropdown/style.css';
+import { Container } from 'react-bootstrap';
 
 const LOCAL_STORAGE_KEY = 'appData';
 
@@ -51,7 +53,7 @@ export class App extends Component<{}, S> {
 
   render() {
     return (
-      <div>
+      <Container fluid>
         <h1>Cap Table Management</h1>
         <h2>Edit</h2>
         <EditShareholders
@@ -75,7 +77,7 @@ export class App extends Component<{}, S> {
         <CapTable data={this.state.data} />
 
         <button onClick={() => this.deleteAllData()}>Delete all data</button>
-      </div>
+      </Container>
     );
   }
 
@@ -97,5 +99,3 @@ export class App extends Component<{}, S> {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
   }
 }
-
-export default App;

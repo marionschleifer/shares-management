@@ -2,6 +2,7 @@ import React from 'react';
 import { AppData } from './types';
 import { sum, formatNumber } from './utils';
 import { Address } from './address';
+import { Table, ProgressBar } from 'react-bootstrap';
 
 interface P {
   data: AppData;
@@ -11,7 +12,7 @@ export function CapTable(props: P) {
   return (
     <div>
       <h3>Cap Table</h3>
-      <table>
+      <Table striped bordered hover responsive size="sm">
         <thead>
           <tr>
             <th>Name</th>
@@ -49,26 +50,31 @@ export function CapTable(props: P) {
 
             return (
               <tr key={_id}>
-                <td>{name}</td>
+                <td>
+                  <div>{name}</div>
+                  <div>
+                    <a target="_blank" href={`mailto:${email}`}>
+                      {email}
+                    </a>
+                  </div>
+                </td>
                 <td>
                   <Address address={address} />
-                  <br />
-                  <a href={`mailto:${email}`}>{email}</a>
                 </td>
                 <td>{ownedSharesAmount}</td>
                 <td>
-                  {percentage === '-' ? '-' : formatNumber(percentage, 2)}% (
-                  {ownedSharesAmount} / {allSharesAmount})
+                  {percentage === '-' ? '-' : displayPercentage(percentage)} (
+                  {ownedSharesAmount} of {allSharesAmount} shares )
                 </td>
                 <td>{investedAmount}</td>
               </tr>
             );
           })}
         </tbody>
-      </table>
+      </Table>
 
       <h3>Shareholders</h3>
-      <table>
+      <Table striped bordered hover responsive size="sm">
         <thead>
           <tr>
             <th>ID</th>
@@ -96,10 +102,10 @@ export function CapTable(props: P) {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
 
       <h3>Share Issues</h3>
-      <table>
+      <Table striped bordered hover responsive size="sm">
         <thead>
           <tr>
             <th>ShareholderId</th>
@@ -120,9 +126,16 @@ export function CapTable(props: P) {
             )
           )}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 }
 
-export default CapTable;
+function displayPercentage(percentage: number) {
+  return (
+    <div>
+      <span>{formatNumber(percentage, 2)}%</span>
+      <ProgressBar now={percentage} label={`${formatNumber(percentage, 2)}%`} />
+    </div>
+  );
+}
